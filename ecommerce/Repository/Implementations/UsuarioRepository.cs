@@ -2,6 +2,9 @@
 using ecommerce.Data;
 using ecommerce.Model;
 using ecommerce.Repository.Interfaces;
+using System.Data;
+using System.Linq;
+
 
 namespace ecommerce.Repository.Implementations
 {
@@ -16,19 +19,56 @@ namespace ecommerce.Repository.Implementations
 
         public async Task<IEnumerable<TbUsuario>> GetAllAsync()
         {
-            var query = "SELECT * FROM TbUsuario";
+            var storedProcedure = "SP_GetAllUsuarios";
             using (var connection = _context.CreateConnection())
             {
-                return await connection.QueryAsync<TbUsuario>(query);
+                var parameters = new DynamicParameters();
+
+                return await connection.QueryAsync<TbUsuario>(storedProcedure, commandType: CommandType.StoredProcedure);
             }
         }
 
-        public async Task<TbUsuario> GetByIdAsync(int id)
+        //public async Task<IEnumerable<TbUsuario>> GetAllAsync()
+        //{
+        //    var query = "SELECT * FROM TbUsuario";
+        //    using (var connection = _context.CreateConnection())
+        //    {
+        //        return await connection.QueryAsync<TbUsuario>(query);
+        //    }
+        //}
+
+        public async Task<TbUsuario> GetByIdAsync(int usuarioId)
         {
-            var query = "SELECT * FROM TbUsuario WHERE UsuarioId = @Id";
+            var storedProcedure = "SP_GetUsuarioById";
             using (var connection = _context.CreateConnection())
             {
-                return await connection.QueryFirstOrDefaultAsync<TbUsuario>(query, new { Id = id });
+                var parameters = new DynamicParameters();
+                parameters.Add("UsuarioId", usuarioId);
+
+                return await connection.QuerySingleOrDefaultAsync<TbUsuario>(storedProcedure, parameters, commandType: CommandType.StoredProcedure);
+            }
+        }
+
+        //public async Task<TbUsuario> GetByIdAsync(int id)
+        //{
+        //    var query = "SELECT * FROM TbUsuario WHERE UsuarioId = @Id";
+        //    using (var connection = _context.CreateConnection())
+        //    {
+        //        return await connection.QueryFirstOrDefaultAsync<TbUsuario>(query, new { Id = id });
+        //    }
+        //}
+
+        public async Task<TbUsuario> GetUsuarioByCorreoClaveAsync(string correo, string clave)
+        {
+            var storedProcedure = "SP_GetUsuarioByCorreoClave";
+            using (var connection = _context.CreateConnection())
+            {
+                var parameters = new DynamicParameters();
+                parameters.Add("Correo", correo);
+                parameters.Add("Clave", clave);
+
+                // Usa QuerySingleOrDefaultAsync para obtener un solo registro
+                return await connection.QuerySingleOrDefaultAsync<TbUsuario>(storedProcedure, parameters, commandType: CommandType.StoredProcedure);
             }
         }
 
@@ -58,5 +98,10 @@ namespace ecommerce.Repository.Implementations
                 return await connection.ExecuteAsync(query, new { Id = id });
             }
         }
+
+        //Task<IEnumerable<TbUsuario>> IUsuarioRepository.GetAllAsync()
+        //{
+        //    throw new NotImplementedException();
+        //}
     }
 }

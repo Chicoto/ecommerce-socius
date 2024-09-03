@@ -1,24 +1,30 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\E\\Desktop\\SociusBootCamp\\ChallengerFinal\\backend\\ecommerce\\ecommerce\\ecommerce.csproj": {}
+    "C:\\Users\\carlo\\source\\repos\\ericksolar\\ecommerce-socius\\ecommerce\\ecommerce.csproj": {}
   },
   "projects": {
-    "C:\\Users\\E\\Desktop\\SociusBootCamp\\ChallengerFinal\\backend\\ecommerce\\ecommerce\\ecommerce.csproj": {
+    "C:\\Users\\carlo\\source\\repos\\ericksolar\\ecommerce-socius\\ecommerce\\ecommerce.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\E\\Desktop\\SociusBootCamp\\ChallengerFinal\\backend\\ecommerce\\ecommerce\\ecommerce.csproj",
+        "projectUniqueName": "C:\\Users\\carlo\\source\\repos\\ericksolar\\ecommerce-socius\\ecommerce\\ecommerce.csproj",
         "projectName": "ecommerce",
-        "projectPath": "C:\\Users\\E\\Desktop\\SociusBootCamp\\ChallengerFinal\\backend\\ecommerce\\ecommerce\\ecommerce.csproj",
-        "packagesPath": "C:\\Users\\E\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\E\\Desktop\\SociusBootCamp\\ChallengerFinal\\backend\\ecommerce\\ecommerce\\obj\\",
+        "projectPath": "C:\\Users\\carlo\\source\\repos\\ericksolar\\ecommerce-socius\\ecommerce\\ecommerce.csproj",
+        "packagesPath": "C:\\Users\\carlo\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\carlo\\source\\repos\\ericksolar\\ecommerce-socius\\ecommerce\\obj\\",
         "projectStyle": "PackageReference",
+        "fallbackFolders": [
+          "D:\\Programas\\Microsoft Visual Studio\\Shared\\NuGetPackages",
+          "C:\\Program Files (x86)\\Microsoft\\Xamarin\\NuGet\\"
+        ],
         "configFilePaths": [
-          "C:\\Users\\E\\AppData\\Roaming\\NuGet\\NuGet.Config",
-          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
+          "C:\\Users\\carlo\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Xamarin.Offline.config"
         ],
         "originalTargetFrameworks": [
-          "net8.0"
+          "net6.0"
         ],
         "sources": {
           "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
@@ -26,8 +32,8 @@
           "https://api.nuget.org/v3/index.json": {}
         },
         "frameworks": {
-          "net8.0": {
-            "targetAlias": "net8.0",
+          "net6.0": {
+            "targetAlias": "net6.0",
             "projectReferences": {}
           }
         },
@@ -35,20 +41,19 @@
           "warnAsError": [
             "NU1605"
           ]
-        },
-        "restoreAuditProperties": {
-          "enableAudit": "true",
-          "auditLevel": "low",
-          "auditMode": "direct"
         }
       },
       "frameworks": {
-        "net8.0": {
-          "targetAlias": "net8.0",
+        "net6.0": {
+          "targetAlias": "net6.0",
           "dependencies": {
             "Dapper": {
               "target": "Package",
               "version": "[2.1.35, )"
+            },
+            "JWT": {
+              "target": "Package",
+              "version": "[10.1.1, )"
             },
             "Microsoft.Data.SqlClient": {
               "target": "Package",
@@ -61,6 +66,10 @@
             "Swashbuckle.AspNetCore.SwaggerUI": {
               "target": "Package",
               "version": "[6.7.3, )"
+            },
+            "System.Linq": {
+              "target": "Package",
+              "version": "[4.3.0, )"
             }
           },
           "imports": [
@@ -82,7 +91,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.303/PortableRuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\6.0.402\\RuntimeIdentifierGraph.json"
         }
       }
     }
