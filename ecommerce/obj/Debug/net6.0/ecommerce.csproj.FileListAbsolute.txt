@@ -66,7 +66,6 @@ C:\Users\carlo\source\repos\ericksolar\ecommerce-socius\ecommerce\obj\Debug\net6
 C:\Users\carlo\source\repos\ericksolar\ecommerce-socius\ecommerce\obj\Debug\net6.0\staticwebassets.build.json
 C:\Users\carlo\source\repos\ericksolar\ecommerce-socius\ecommerce\obj\Debug\net6.0\staticwebassets.development.json
 C:\Users\carlo\source\repos\ericksolar\ecommerce-socius\ecommerce\obj\Debug\net6.0\scopedcss\bundle\ecommerce.styles.css
-C:\Users\carlo\source\repos\ericksolar\ecommerce-socius\ecommerce\obj\Debug\net6.0\ecommerce.csproj.CopyComplete
 C:\Users\carlo\source\repos\ericksolar\ecommerce-socius\ecommerce\obj\Debug\net6.0\ecommerce.dll
 C:\Users\carlo\source\repos\ericksolar\ecommerce-socius\ecommerce\obj\Debug\net6.0\refint\ecommerce.dll
 C:\Users\carlo\source\repos\ericksolar\ecommerce-socius\ecommerce\obj\Debug\net6.0\ecommerce.pdb
@@ -75,3 +74,10 @@ C:\Users\carlo\source\repos\ericksolar\ecommerce-socius\ecommerce\obj\Debug\net6
 C:\Users\carlo\source\repos\ericksolar\ecommerce-socius\ecommerce\bin\Debug\net6.0\JWT.dll
 C:\Users\carlo\source\repos\ericksolar\ecommerce-socius\ecommerce\bin\Debug\net6.0\Newtonsoft.Json.dll
 C:\Users\carlo\source\repos\ericksolar\ecommerce-socius\ecommerce\bin\Debug\net6.0\System.Text.Json.dll
+C:\Users\carlo\source\repos\ericksolar\ecommerce-socius\ecommerce\obj\Debug\net6.0\ecommerce.sourcelink.json
+C:\Users\carlo\source\repos\ericksolar\ecommerce-socius\ecommerce\obj\Debug\net6.0\staticwebassets\msbuild.ecommerce.Microsoft.AspNetCore.StaticWebAssets.props
+C:\Users\carlo\source\repos\ericksolar\ecommerce-socius\ecommerce\obj\Debug\net6.0\staticwebassets\msbuild.build.ecommerce.props
+C:\Users\carlo\source\repos\ericksolar\ecommerce-socius\ecommerce\obj\Debug\net6.0\staticwebassets\msbuild.buildMultiTargeting.ecommerce.props
+C:\Users\carlo\source\repos\ericksolar\ecommerce-socius\ecommerce\obj\Debug\net6.0\staticwebassets\msbuild.buildTransitive.ecommerce.props
+C:\Users\carlo\source\repos\ericksolar\ecommerce-socius\ecommerce\obj\Debug\net6.0\staticwebassets.pack.json
+C:\Users\carlo\source\repos\ericksolar\ecommerce-socius\ecommerce\obj\Debug\net6.0\ecommerce.csproj.Up2Date
