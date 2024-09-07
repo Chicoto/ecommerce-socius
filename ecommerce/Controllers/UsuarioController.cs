@@ -32,10 +32,10 @@ namespace ecommerce.Controllers
             return Ok(usuario);
         }
 
-        [HttpGet("byCorreoClave")]
-        public async Task<IActionResult> GetByCorreoClave(string correo, string clave)
+        [HttpGet("{email}/{password}")]
+        public async Task<IActionResult> GetByCorreoClave(string email, string password)
         {
-            var usuario = await _usuarioService.GetUsuarioByCorreoClaveAsync(correo, clave);
+            var usuario = await _usuarioService.GetUsuarioByCorreoClaveAsync(email, password);
             if (usuario == null)
                 return NotFound();
 
@@ -59,8 +59,8 @@ namespace ecommerce.Controllers
 
         }
 
-        [HttpPut("Update/Nombre/{id}/{nombre}")]
-        public async Task<IActionResult> UpdateNombre(int id, string nombre)
+        [HttpPut("update/name/{id}/{name}")]
+        public async Task<IActionResult> UpdateNombre(int id, string name)
         {
 
             var existingUsuario = await _usuarioService.GetByIdAsync(id);
@@ -68,7 +68,7 @@ namespace ecommerce.Controllers
                 return NotFound();
 
             // Intentar actualizar el nombre del usuario
-            var updateResult = await _usuarioService.UpdateNombreUsuarioAsync(id, nombre);
+            var updateResult = await _usuarioService.UpdateNombreUsuarioAsync(id, name);
 
             // Verificar si la actualización fue exitosa
             if (updateResult == 1)
@@ -83,8 +83,8 @@ namespace ecommerce.Controllers
             }
         }
 
-        [HttpPut("Update/Clave/{id}/{clave}")]
-        public async Task<IActionResult> UpdateClave(int id, string clave)
+        [HttpPut("update/password/{id}/{password}")]
+        public async Task<IActionResult> UpdateClave(int id, string password)
         {
 
             var existingUsuario = await _usuarioService.GetByIdAsync(id);
@@ -92,7 +92,7 @@ namespace ecommerce.Controllers
                 return NotFound();
 
             // Intentar actualizar el nombre del usuario
-            var updateResult = await _usuarioService.UpdateClaveUsuarioAsync(id, clave);
+            var updateResult = await _usuarioService.UpdateClaveUsuarioAsync(id, password);
 
             // Verificar si la actualización fue exitosa
             if (updateResult == 1)
@@ -107,8 +107,8 @@ namespace ecommerce.Controllers
             }
         }
 
-        [HttpPut("Update/Habilitado/{id}/{habilitado}")]
-        public async Task<IActionResult> UpdateHabilitado(int id, bool habilitado)
+        [HttpPut("update/enabled/{id}/{enabled}")]
+        public async Task<IActionResult> UpdateHabilitado(int id, bool enabled)
         {
 
             var existingUsuario = await _usuarioService.GetByIdAsync(id);
@@ -116,7 +116,7 @@ namespace ecommerce.Controllers
                 return NotFound();
 
             // Intentar actualizar el nombre del usuario
-            var updateResult = await _usuarioService.UpdateHabilitaUsuarioAsync(id, habilitado);
+            var updateResult = await _usuarioService.UpdateHabilitaUsuarioAsync(id, enabled);
 
             // Verificar si la actualización fue exitosa
             if (updateResult == 1)
@@ -131,8 +131,8 @@ namespace ecommerce.Controllers
             }
         }
 
-        [HttpPut("Update/Eliminado/{id}/{eliminado}")]
-        public async Task<IActionResult> UpdateEliminado(int id, bool eliminado ) 
+        [HttpPut("update/deleted/{id}/{deleted}")]
+        public async Task<IActionResult> UpdateEliminado(int id, bool deleted) 
         {
 
             var existingUsuario = await _usuarioService.GetByIdAsync(id);
@@ -140,7 +140,7 @@ namespace ecommerce.Controllers
                 return NotFound();
 
             // Intentar actualizar el nombre del usuario
-            var updateResult = await _usuarioService.UpdateEliminaUsuarioAsync(id, eliminado);
+            var updateResult = await _usuarioService.UpdateEliminaUsuarioAsync(id, deleted);
 
             // Verificar si la actualización fue exitosa
             if (updateResult == 1)
