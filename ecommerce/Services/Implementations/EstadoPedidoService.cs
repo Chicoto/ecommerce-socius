@@ -21,20 +21,5 @@ namespace ecommerce.Services.Implementations
         {
             return await _estadoPedidoRepository.GetByIdAsync(id);
         }
-
-        public async Task<int> InsertAsync(TbEstadoPedido estadoPedido)
-        {
-            return await _estadoPedidoRepository.InsertAsync(estadoPedido);
-        }
-
-        public async Task<int> UpdateAsync(TbEstadoPedido estadoPedido)
-        {
-            return await _estadoPedidoRepository.UpdateAsync(estadoPedido);
-        }
-
-        public async Task<int> DeleteAsync(int id)
-        {
-            return await _estadoPedidoRepository.DeleteAsync(id);
-        }
     }
 }

@@ -13,30 +13,46 @@ namespace ecommerce.Services.Implementations
             _productoRepository = productoRepository;
         }
 
-        public async Task<IEnumerable<TbProducto>> GetAllAsync()
+        public async Task<IEnumerable<TbProducto>> GetAllProductosAsync()
         {
-            return await _productoRepository.GetAllAsync();
+            return await _productoRepository.GetAllProductosAsync();
         }
 
-        public async Task<TbProducto> GetByIdAsync(int id)
+        public async Task<IEnumerable<TbProducto>> GetAllProductosHabilitadosAsync()
+        {
+            var productos = await GetAllProductosAsync();
+            var productosHabilitados = productos.Where(p => p.Habilitado).ToList();
+            return productosHabilitados;
+        }
+
+        public async Task<TbProducto?> GetByIdAsync(int id)
         {
             return await _productoRepository.GetByIdAsync(id);
         }
 
-        public async Task<int> InsertAsync(TbProducto producto)
+        public async Task<int> InsertProductoAsync(TbProducto producto)
         {
-            return await _productoRepository.InsertAsync(producto);
+            return await _productoRepository.InsertProductoAsync(producto);
         }
 
-        public async Task<int> UpdateAsync(TbProducto producto)
+        public async Task<int> UpdateEliminaProductoAsync(int productoId, bool eliminado)
         {
-            return await _productoRepository.UpdateAsync(producto);
+            return await _productoRepository.UpdateEliminaProductoAsync(productoId, eliminado);
         }
 
-        public async Task<int> DeleteAsync(int id)
+        public async Task<int> UpdateHabilitaProductoAsync(int productoId, bool habilitado)
         {
-            return await _productoRepository.DeleteAsync(id);
+            return await _productoRepository.UpdateHabilitaProductoAsync(productoId, habilitado);
         }
 
+        public async Task<int> UpdateProductoDetailsAsync(int productoId, string nombre, string descripcion, decimal precio)
+        {
+            return await _productoRepository.UpdateProductoDetailsAsync(productoId, nombre, descripcion, precio);
+        }
+
+        public async Task<int> UpdateStockProductoAsync(int productoId, int stock)
+        {
+            return await _productoRepository.UpdateStockProductoAsync(productoId, stock);
+        }
     }
 }

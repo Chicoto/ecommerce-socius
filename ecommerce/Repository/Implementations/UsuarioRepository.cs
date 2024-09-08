@@ -4,7 +4,7 @@ using ecommerce.Model;
 using ecommerce.Repository.Interfaces;
 using System.Data;
 using System.Linq;
-
+using System.Net.WebSockets;
 
 namespace ecommerce.Repository.Implementations
 {
@@ -17,7 +17,7 @@ namespace ecommerce.Repository.Implementations
             _context = context;
         }
 
-        public async Task<IEnumerable<TbUsuario>> GetAllAsync()
+        public async Task<IEnumerable<TbUsuario>> GetAllUsuariosAsync()
         {
             var storedProcedure = "SP_GetAllUsuarios";
             using (var connection = _context.CreateConnection())
@@ -28,16 +28,7 @@ namespace ecommerce.Repository.Implementations
             }
         }
 
-        //public async Task<IEnumerable<TbUsuario>> GetAllAsync()
-        //{
-        //    var query = "SELECT * FROM TbUsuario";
-        //    using (var connection = _context.CreateConnection())
-        //    {
-        //        return await connection.QueryAsync<TbUsuario>(query);
-        //    }
-        //}
-
-        public async Task<TbUsuario> GetByIdAsync(int usuarioId)
+        public async Task<TbUsuario?> GetByIdAsync(int usuarioId)
         {
             var storedProcedure = "SP_GetUsuarioById";
             using (var connection = _context.CreateConnection())
@@ -45,20 +36,11 @@ namespace ecommerce.Repository.Implementations
                 var parameters = new DynamicParameters();
                 parameters.Add("UsuarioId", usuarioId);
 
-                return await connection.QuerySingleOrDefaultAsync<TbUsuario>(storedProcedure, parameters, commandType: CommandType.StoredProcedure);
+                return await connection.QuerySingleOrDefaultAsync<TbUsuario?>(storedProcedure, parameters, commandType: CommandType.StoredProcedure);
             }
         }
 
-        //public async Task<TbUsuario> GetByIdAsync(int id)
-        //{
-        //    var query = "SELECT * FROM TbUsuario WHERE UsuarioId = @Id";
-        //    using (var connection = _context.CreateConnection())
-        //    {
-        //        return await connection.QueryFirstOrDefaultAsync<TbUsuario>(query, new { Id = id });
-        //    }
-        //}
-
-        public async Task<TbUsuario> GetUsuarioByCorreoClaveAsync(string correo, string clave)
+        public async Task<TbUsuario?> GetUsuarioByCorreoClaveAsync(string correo, string clave)
         {
             var storedProcedure = "SP_GetUsuarioByCorreoClave";
             using (var connection = _context.CreateConnection())
@@ -68,40 +50,84 @@ namespace ecommerce.Repository.Implementations
                 parameters.Add("Clave", clave);
 
                 // Usa QuerySingleOrDefaultAsync para obtener un solo registro
-                return await connection.QuerySingleOrDefaultAsync<TbUsuario>(storedProcedure, parameters, commandType: CommandType.StoredProcedure);
+                return await connection.QuerySingleOrDefaultAsync<TbUsuario?>(storedProcedure, parameters, commandType: CommandType.StoredProcedure);
             }
         }
 
-        public async Task<int> InsertAsync(TbUsuario usuario)
+        public async Task<int> InsertUsuarioAsync(TbUsuario usuario)
         {
-            var query = "INSERT INTO TbUsuario (Nombre, Email, Password, EsAdmin, Eliminado, Habilitado) VALUES (@Nombre, @Email, @Password, @EsAdmin, @Eliminado, @Habilitado)";
+            var storedProcedure = "SP_InsertUsuario";
             using (var connection = _context.CreateConnection())
             {
-                return await connection.ExecuteAsync(query, usuario);
+                var parameters = new DynamicParameters();
+                parameters.Add("Nombre", usuario.Nombre);
+                parameters.Add("Clave", usuario.Clave);
+                parameters.Add("Correo", usuario.Correo);
+                parameters.Add("EsAdmin", usuario.EsAdmin);
+                parameters.Add("Eliminado", usuario.Eliminado);
+                parameters.Add("Habilitado", usuario.Habilitado);
+
+                // Usa QuerySingleOrDefaultAsync para obtener un solo registro
+                return await connection.QuerySingleOrDefaultAsync<int>(storedProcedure, parameters, commandType: CommandType.StoredProcedure);
             }
         }
 
-        public async Task<int> UpdateAsync(TbUsuario usuario)
+        public async Task<int> UpdateHabilitaUsuarioAsync(int usuarioId, bool habilitado)
         {
-            var query = "UPDATE TbUsuario SET Nombre = @Nombre, Email = @Email, Password = @Password, EsAdmin = @EsAdmin, Eliminado = @Eliminado, Habilitado = @Habilitado WHERE UsuarioId = @UsuarioId";
+            var storedProcedure = "SP_UpdateUsuarioHabilitado";
             using (var connection = _context.CreateConnection())
             {
-                return await connection.ExecuteAsync(query, usuario);
+                var parameters = new DynamicParameters();
+                parameters.Add("UsuarioId", usuarioId);
+                parameters.Add("Habilitado", habilitado);
+
+                // Usa QuerySingleOrDefaultAsync para obtener un solo registro
+                return await connection.QuerySingleOrDefaultAsync<int>(storedProcedure, parameters, commandType: CommandType.StoredProcedure);
             }
         }
 
-        public async Task<int> DeleteAsync(int id)
+        public async Task<int> UpdateEliminaUsuarioAsync(int usuarioId, bool eliminado)
         {
-            var query = "DELETE FROM TbUsuario WHERE UsuarioId = @Id";
+            var storedProcedure = "SP_UpdateUsuarioEliminado";
             using (var connection = _context.CreateConnection())
             {
-                return await connection.ExecuteAsync(query, new { Id = id });
+                var parameters = new DynamicParameters();
+                parameters.Add("UsuarioId", usuarioId);
+                parameters.Add("Eliminado", eliminado);
+
+                // Usa QuerySingleOrDefaultAsync para obtener un solo registro
+                var result  =  await connection.QuerySingleOrDefaultAsync<int>(storedProcedure, parameters, commandType: CommandType.StoredProcedure);
+                return result;
             }
         }
 
-        //Task<IEnumerable<TbUsuario>> IUsuarioRepository.GetAllAsync()
-        //{
-        //    throw new NotImplementedException();
-        //}
+        public async Task<int> UpdateClaveUsuarioAsync(int usuarioId, string clave)
+        {
+            var storedProcedure = "SP_UpdateUsuarioClave";
+            using (var connection = _context.CreateConnection())
+            {
+                var parameters = new DynamicParameters();
+                parameters.Add("UsuarioId", usuarioId);
+                parameters.Add("Clave", clave);
+
+                // Usa QuerySingleOrDefaultAsync para obtener un solo registro
+                return await connection.QuerySingleOrDefaultAsync<int>(storedProcedure, parameters, commandType: CommandType.StoredProcedure);
+            }
+        }
+
+        public async Task<int> UpdateNombreUsuarioAsync(int usuarioId, string nombre)
+        {
+            var storedProcedure = "SP_UpdateUsuarioNombre";
+            using (var connection = _context.CreateConnection())
+            {
+                var parameters = new DynamicParameters();
+                parameters.Add("UsuarioId", usuarioId);
+                parameters.Add("Nombre", nombre);
+
+                // Usa QuerySingleOrDefaultAsync para obtener un solo registro
+                return await connection.QuerySingleOrDefaultAsync<int>(storedProcedure, parameters, commandType: CommandType.StoredProcedure);
+            }
+        }
+
     }
 }

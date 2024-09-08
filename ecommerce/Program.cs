@@ -3,6 +3,7 @@ using ecommerce.Repository.Implementations;
 using ecommerce.Repository.Interfaces;
 using ecommerce.Services.Implementations;
 using ecommerce.Services.Interfaces;
+using Microsoft.Extensions.Options;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -27,6 +28,15 @@ builder.Services.AddSingleton<DapperContext>();
 
 builder.Services.AddControllers();
 
+builder.Services.AddCors(p =>
+{
+    //p.AddPolicy("corspolicy", build => { build.WithOrigins("http://localhost:4200").AllowAnyMethod().AllowAnyHeader(); });
+    p.AddPolicy("AllowAnyOrigin", builder =>
+    {
+        builder.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader();
+    });
+});
+
 
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
@@ -35,11 +45,13 @@ builder.Services.AddSwaggerGen();
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
-if (app.Environment.IsDevelopment())
-{
-    app.UseSwagger();
-    app.UseSwaggerUI();
-}
+//if (app.Environment.IsDevelopment())
+//{
+
+//}
+app.UseSwagger();
+app.UseSwaggerUI();
+app.UseCors("AllowAnyOrigin");
 
 app.UseHttpsRedirection();
 

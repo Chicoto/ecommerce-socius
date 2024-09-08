@@ -13,29 +13,14 @@ namespace ecommerce.Services.Implementations
             _pedidoDetalleRepository = pedidoDetalleRepository;
         }
 
-        public async Task<IEnumerable<TbPedidoDetalle>> GetAllAsync()
+        public async Task<IEnumerable<TbPedidoDetalle>> GetAllProductosAsync()
         {
-            return await _pedidoDetalleRepository.GetAllAsync();
+            return await _pedidoDetalleRepository.GetAllProductosAsync();
         }
 
-        public async Task<TbPedidoDetalle> GetByIdAsync(int pedidoId, int productoId)
+        public async Task<TbPedidoDetalle> GetByPedidoIdProductoIdAsync(int pedidoId, int productoId)
         {
-            return await _pedidoDetalleRepository.GetByIdAsync(pedidoId, productoId);
-        }
-
-        public async Task<int> InsertAsync(TbPedidoDetalle pedidoDetalle)
-        {
-            return await _pedidoDetalleRepository.InsertAsync(pedidoDetalle);
-        }
-
-        public async Task<int> UpdateAsync(TbPedidoDetalle pedidoDetalle)
-        {
-            return await _pedidoDetalleRepository.UpdateAsync(pedidoDetalle);
-        }
-
-        public async Task<int> DeleteAsync(int pedidoId, int productoId)
-        {
-            return await _pedidoDetalleRepository.DeleteAsync(pedidoId, productoId);
+            return await _pedidoDetalleRepository.GetByPedidoIdProductoIdAsync(pedidoId, productoId);
         }
     }
 }

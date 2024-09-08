@@ -2,6 +2,7 @@
 using ecommerce.Data;
 using ecommerce.Model;
 using ecommerce.Repository.Interfaces;
+using System.Data;
 
 namespace ecommerce.Repository.Implementations
 {
@@ -14,49 +15,101 @@ namespace ecommerce.Repository.Implementations
             _context = context;
         }
 
-        public async Task<IEnumerable<TbProducto>> GetAllAsync()
+        public async Task<IEnumerable<TbProducto>> GetAllProductosAsync()
         {
-            var query = "SELECT * FROM TbProducto";
+            var storedProcedure = "SP_GetAllProductos";
             using (var connection = _context.CreateConnection())
             {
-                return await connection.QueryAsync<TbProducto>(query);
+                var parameters = new DynamicParameters();
+
+                return await connection.QueryAsync<TbProducto>(storedProcedure, commandType: CommandType.StoredProcedure);
             }
         }
 
-        public async Task<TbProducto> GetByIdAsync(int id)
+        public async Task<TbProducto?> GetByIdAsync(int id)
         {
-            var query = "SELECT * FROM TbProducto WHERE ProductoId = @Id";
+            var storedProcedure = "SP_GetProductoById";
             using (var connection = _context.CreateConnection())
             {
-                return await connection.QueryFirstOrDefaultAsync<TbProducto>(query, new { Id = id });
+                var parameters = new DynamicParameters();
+                parameters.Add("ProductoId", id);
+
+                return await connection.QuerySingleOrDefaultAsync<TbProducto?>(storedProcedure, parameters, commandType: CommandType.StoredProcedure);
             }
         }
 
-        public async Task<int> InsertAsync(TbProducto producto)
+        public async Task<int> InsertProductoAsync(TbProducto producto)
         {
-            var query = "INSERT INTO TbProducto (Nombre, Descripcion, Precio, Stock, StockReservado, Habilitado, Eliminado) VALUES (@Nombre, @Descripcion, @Precio, @Stock, @StockReservado, @Habilitado, @Eliminado)";
+            var storedProcedure = "SP_InsertProducto";
             using (var connection = _context.CreateConnection())
             {
-                return await connection.ExecuteAsync(query, producto);
+                var parameters = new DynamicParameters();
+                parameters.Add("@Nombre", producto.Nombre);
+                parameters.Add("@Descripcion", producto.Descripcion);
+                parameters.Add("@Stock", producto.Stock);
+                parameters.Add("@Precio", producto.Precio);
+                parameters.Add("@Habilitado", producto.Habilitado);
+                parameters.Add("@Eliminado", producto.Eliminado);
+
+                return await connection.QuerySingleOrDefaultAsync<int>(storedProcedure, parameters, commandType: CommandType.StoredProcedure);
             }
         }
 
-        public async Task<int> UpdateAsync(TbProducto producto)
+        public async Task<int> UpdateHabilitaProductoAsync(int productoId, bool habilitado)
         {
-            var query = "UPDATE TbProducto SET Nombre = @Nombre, Descripcion = @Descripcion, Precio = @Precio, Stock = @Stock, StockReservado = @StockReservado, Habilitado = @Habilitado, Eliminado = @Eliminado WHERE ProductoId = @ProductoId";
+            var storedProcedure = "SP_UpdateProductoHabilitado";
             using (var connection = _context.CreateConnection())
             {
-                return await connection.ExecuteAsync(query, producto);
+                var parameters = new DynamicParameters();
+                parameters.Add("ProductoId", productoId);
+                parameters.Add("Habilitado", habilitado);
+
+                return await connection.QuerySingleOrDefaultAsync<int>(storedProcedure, parameters, commandType: CommandType.StoredProcedure);
             }
         }
 
-        public async Task<int> DeleteAsync(int id)
+        public async Task<int> UpdateEliminaProductoAsync(int productoId, bool eliminado)
         {
-            var query = "DELETE FROM TbProducto WHERE ProductoId = @Id";
+            var storedProcedure = "SP_UpdateProductoEliminado";
             using (var connection = _context.CreateConnection())
             {
-                return await connection.ExecuteAsync(query, new { Id = id });
+                var parameters = new DynamicParameters();
+                parameters.Add("ProductoId", productoId);
+                parameters.Add("Eliminado", eliminado);
+
+                return await connection.QuerySingleOrDefaultAsync<int>(storedProcedure, parameters, commandType: CommandType.StoredProcedure);
             }
         }
+
+        public async Task<int> UpdateStockProductoAsync(int productoId, int stock)
+        {
+            var storedProcedure = "SP_UpdateProductoStock";
+            using (var connection = _context.CreateConnection())
+            {
+                var parameters = new DynamicParameters();
+                parameters.Add("ProductoId", productoId);
+                parameters.Add("Stock", stock);
+
+                return await connection.QuerySingleOrDefaultAsync<int>(storedProcedure, parameters, commandType: CommandType.StoredProcedure);
+            }
+        }
+
+        public async Task<int> UpdateProductoDetailsAsync(int productoId, string nombre, string descripcion, decimal precio)
+        {
+            var storedProcedure = "SP_UpdateProductoDetails";
+            using (var connection = _context.CreateConnection())
+            {
+                var parameters = new DynamicParameters();
+                parameters.Add("ProductoId", productoId);
+                parameters.Add("Nombre", nombre);
+                parameters.Add("Descripcion", descripcion);
+                parameters.Add("Precio", precio);
+
+                return await connection.QuerySingleOrDefaultAsync<int>(storedProcedure, parameters, commandType: CommandType.StoredProcedure);
+            }
+        }
+
+
+
     }
 }

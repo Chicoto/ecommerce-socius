@@ -9,7 +9,7 @@
         public int Stock { get; set; }
         public int StockReservado { get; set; }
         public bool Habilitado { get; set; }
-        public int Eliminado { get; set; }
+        public bool Eliminado { get; set; }
 
     }
 }

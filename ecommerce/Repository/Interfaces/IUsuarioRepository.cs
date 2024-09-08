@@ -4,10 +4,13 @@ namespace ecommerce.Repository.Interfaces
 {
     public interface IUsuarioRepository
     {
-        Task<IEnumerable<TbUsuario>> GetAllAsync();
-        Task<TbUsuario> GetByIdAsync(int id);
-        Task<int> InsertAsync(TbUsuario usuario);
-        Task<int> UpdateAsync(TbUsuario usuario);
-        Task<int> DeleteAsync(int id);
+        Task<IEnumerable<TbUsuario>> GetAllUsuariosAsync();
+        Task<TbUsuario?> GetByIdAsync(int id);
+        Task<int> InsertUsuarioAsync(TbUsuario usuario);
+        Task<TbUsuario?> GetUsuarioByCorreoClaveAsync(string correo, string clave);
+        Task<int> UpdateHabilitaUsuarioAsync(int usuarioId, bool habilitado);
+        Task<int> UpdateEliminaUsuarioAsync(int usuarioId, bool eliminado);
+        Task<int> UpdateClaveUsuarioAsync(int usuarioId, string clave);
+        Task<int> UpdateNombreUsuarioAsync(int usuarioId, string nombre);
     }
 }

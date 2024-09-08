@@ -16,10 +16,10 @@ namespace ecommerce.Controllers
             _loginService = loginService;
         }
 
-        [HttpGet("{correo}/{clave}")]
-        public async Task<IActionResult> GetTokenLogin(string correo, string clave)
+        [HttpGet("{email}/{password}")]
+        public async Task<IActionResult> GetTokenLogin(string email, string password)
         {
-            var token = await _loginService.ValidateUserAndGenerateTokenAsync(correo, clave);
+            var token = await _loginService.ValidateUserAndGenerateTokenAsync(email, password);
             if (token == null)
                 return NotFound();
 
