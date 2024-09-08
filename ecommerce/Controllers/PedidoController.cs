@@ -1,4 +1,5 @@
 ﻿using ecommerce.Model;
+using ecommerce.Services.Implementations;
 using ecommerce.Services.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 
@@ -17,7 +18,17 @@ namespace ecommerce.Controllers
         [HttpGet]
         public async Task<IActionResult> GetAll()
         {
-            var pedidos = await _pedidoService.GetAllAsync();
+            var pedidos = await _pedidoService.GetAllPedidosAsync();
+            return Ok(pedidos);
+        }
+
+        [HttpGet("{token}")]
+        public async Task<IActionResult> GetAllByToken(Guid token)
+        {
+            var pedidos = await _pedidoService.GetPedidosByUsuarioTokenAsync(token);
+            if (pedidos == null)
+                return NotFound();
+
             return Ok(pedidos);
         }
 
@@ -31,39 +42,20 @@ namespace ecommerce.Controllers
             return Ok(pedido);
         }
 
+
         [HttpPost]
-        public async Task<IActionResult> Create([FromBody] TbPedido pedido)
+        public async Task<ActionResult> Post([FromBody] TbPedido pedido)
         {
             if (pedido == null)
                 return BadRequest();
 
-            await _pedidoService.InsertAsync(pedido);
-            return CreatedAtAction(nameof(GetById), new { id = pedido.PedidoId }, pedido);
-        }
+            var pedidoId = await _pedidoService.InsertPedidoAsync(pedido);
 
-        [HttpPut("{id}")]
-        public async Task<IActionResult> Update(int id, [FromBody] TbPedido pedido)
-        {
-            if (pedido == null || pedido.PedidoId != id)
-                return BadRequest();
+            if (pedidoId == 0)
+                return StatusCode(500, "Error al crear el pedido.");
 
-            var existingPedido = await _pedidoService.GetByIdAsync(id);
-            if (existingPedido == null)
-                return NotFound();
-
-            await _pedidoService.UpdateAsync(pedido);
-            return NoContent();
-        }
-
-        [HttpDelete("{id}")]
-        public async Task<IActionResult> Delete(int id)
-        {
-            var existingPedido = await _pedidoService.GetByIdAsync(id);
-            if (existingPedido == null)
-                return NotFound();
-
-            await _pedidoService.DeleteAsync(id);
-            return NoContent();
+            // Retornar el ID con un 201 Created y la URL para obtener el usuario creado
+            return CreatedAtAction(nameof(GetById), new { id = pedidoId }, new { PedidoId = pedidoId });
         }
 
     }

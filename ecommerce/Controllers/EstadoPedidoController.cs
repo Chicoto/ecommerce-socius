@@ -32,39 +32,6 @@ namespace ecommerce.Controllers
             return Ok(estadoPedido);
         }
 
-        [HttpPost]
-        public async Task<IActionResult> Create([FromBody] TbEstadoPedido estadoPedido)
-        {
-            if (estadoPedido == null)
-                return BadRequest();
-
-            await _estadoPedidoService.InsertAsync(estadoPedido);
-            return CreatedAtAction(nameof(GetById), new { id = estadoPedido.EstadoId }, estadoPedido);
-        }
-
-        [HttpPut("{id}")]
-        public async Task<IActionResult> Update(int id, [FromBody] TbEstadoPedido estadoPedido)
-        {
-            if (estadoPedido == null || estadoPedido.EstadoId != id)
-                return BadRequest();
-
-            var existingEstadoPedido = await _estadoPedidoService.GetByIdAsync(id);
-            if (existingEstadoPedido == null)
-                return NotFound();
-
-            await _estadoPedidoService.UpdateAsync(estadoPedido);
-            return NoContent();
-        }
-
-        [HttpDelete("{id}")]
-        public async Task<IActionResult> Delete(int id)
-        {
-            var existingEstadoPedido = await _estadoPedidoService.GetByIdAsync(id);
-            if (existingEstadoPedido == null)
-                return NotFound();
-
-            await _estadoPedidoService.DeleteAsync(id);
-            return NoContent();
-        }
+        
     }
 }

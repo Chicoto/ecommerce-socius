@@ -2,6 +2,8 @@
 using ecommerce.Data;
 using ecommerce.Model;
 using ecommerce.Repository.Interfaces;
+using Newtonsoft.Json.Linq;
+using System.Data;
 
 namespace ecommerce.Repository.Implementations
 {
@@ -14,48 +16,31 @@ namespace ecommerce.Repository.Implementations
             _context = context;
         }
 
-        public async Task<IEnumerable<TbPedidoDetalle>> GetAllAsync()
+        public async Task<IEnumerable<TbPedidoDetalle>> GetAllProductosAsync()
         {
-            var query = "SELECT * FROM TbPedidoDetalle";
+            var storedProcedure = "SP_GetAllPedidosDetalle";
             using (var connection = _context.CreateConnection())
             {
-                return await connection.QueryAsync<TbPedidoDetalle>(query);
+                var parameters = new DynamicParameters();
+
+                return await connection.QueryAsync<TbPedidoDetalle>(storedProcedure, commandType: CommandType.StoredProcedure);
             }
         }
 
-        public async Task<TbPedidoDetalle> GetByIdAsync(int pedidoId, int productoId)
+        public async Task<TbPedidoDetalle> GetByPedidoIdProductoIdAsync(int pedidoId, int productoId)
         {
-            var query = "SELECT * FROM TbPedidoDetalle WHERE PedidoId = @PedidoId AND ProductoId = @ProductoId";
+            var storedProcedure = "SP_GetPedidosByToken";
             using (var connection = _context.CreateConnection())
             {
-                return await connection.QueryFirstOrDefaultAsync<TbPedidoDetalle>(query, new { PedidoId = pedidoId, ProductoId = productoId });
-            }
-        }
+                // Crear los parámetros para el procedimiento almacenado
+                var parameters = new DynamicParameters();
+                parameters.Add("PedidoId", pedidoId);
+                parameters.Add("ProductoId", productoId);
 
-        public async Task<int> InsertAsync(TbPedidoDetalle pedidoDetalle)
-        {
-            var query = "INSERT INTO TbPedidoDetalle (PedidoId, ProductoId, Cantidad, PrecioTotal) VALUES (@PedidoId, @ProductoId, @Cantidad, @PrecioTotal)";
-            using (var connection = _context.CreateConnection())
-            {
-                return await connection.ExecuteAsync(query, pedidoDetalle);
-            }
-        }
+                // Ejecutar el procedimiento almacenado y mapear el resultado a la clase TbPedido
+                var detalle = await connection.QuerySingleOrDefaultAsync<TbPedidoDetalle>(storedProcedure, parameters, commandType: CommandType.StoredProcedure);
 
-        public async Task<int> UpdateAsync(TbPedidoDetalle pedidoDetalle)
-        {
-            var query = "UPDATE TbPedidoDetalle SET Cantidad = @Cantidad, PrecioTotal = @PrecioTotal WHERE PedidoId = @PedidoId AND ProductoId = @ProductoId";
-            using (var connection = _context.CreateConnection())
-            {
-                return await connection.ExecuteAsync(query, pedidoDetalle);
-            }
-        }
-
-        public async Task<int> DeleteAsync(int pedidoId, int productoId)
-        {
-            var query = "DELETE FROM TbPedidoDetalle WHERE PedidoId = @PedidoId AND ProductoId = @ProductoId";
-            using (var connection = _context.CreateConnection())
-            {
-                return await connection.ExecuteAsync(query, new { PedidoId = pedidoId, ProductoId = productoId });
+                return detalle;
             }
         }
     }

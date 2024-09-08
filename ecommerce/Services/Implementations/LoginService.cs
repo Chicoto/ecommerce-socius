@@ -42,7 +42,8 @@ namespace ecommerce.Services.Implementations
             {
                 Subject = new ClaimsIdentity(new Claim[]
                 {
-                    new Claim(ClaimTypes.Hash, token)
+                    //new Claim(ClaimTypes.Hash, token)
+                    new Claim("Token", token)
                 }),
                 //Expires = DateTime.UtcNow.AddHours(1),
                 SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)
@@ -77,7 +78,7 @@ namespace ecommerce.Services.Implementations
                 var claims = principal.Claims;
 
                 // Extraer valores de las reclamaciones (claims)
-                var tokenDetalle = claims.FirstOrDefault(c => c.Type == ClaimTypes.Hash)?.Value;
+                var tokenDetalle = claims.FirstOrDefault(c => c.Type == "Token")?.Value;
 
                 // Construir el resultado
                 return $"Token: {tokenDetalle}";

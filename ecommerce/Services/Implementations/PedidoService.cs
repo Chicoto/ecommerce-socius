@@ -1,4 +1,5 @@
 ﻿using ecommerce.Model;
+using ecommerce.Repository.Implementations;
 using ecommerce.Repository.Interfaces;
 using ecommerce.Services.Interfaces;
 
@@ -12,29 +13,27 @@ namespace ecommerce.Services.Implementations
         {
             _pedidoRepository = pedidoRepository;
         }
-        public async Task<IEnumerable<TbPedido>> GetAllAsync()
+
+        public async Task<IEnumerable<TbPedido>> GetAllPedidosAsync()
         {
-            return await _pedidoRepository.GetAllAsync();
+            return await _pedidoRepository.GetAllPedidosAsync();
         }
 
-        public async Task<TbPedido> GetByIdAsync(int id)
+        public async Task<IEnumerable<TbPedido>> GetPedidosByUsuarioTokenAsync(Guid token)
+        {
+            return await _pedidoRepository.GetPedidosByUsuarioTokenAsync(token);
+        }
+
+        public async Task<TbPedido?> GetByIdAsync(int id)
         {
             return await _pedidoRepository.GetByIdAsync(id);
         }
 
-        public async Task<int> InsertAsync(TbPedido pedido)
+        public async Task<int> InsertPedidoAsync(TbPedido pedido)
         {
-            return await _pedidoRepository.InsertAsync(pedido);
+            return await _pedidoRepository.InsertPedidoAsync(pedido);
         }
 
-        public async Task<int> UpdateAsync(TbPedido pedido)
-        {
-            return await _pedidoRepository.UpdateAsync(pedido);
-        }
-
-        public async Task<int> DeleteAsync(int id)
-        {
-            return await _pedidoRepository.DeleteAsync(id);
-        }
+        
     }
 }

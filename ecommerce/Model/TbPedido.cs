@@ -8,6 +8,7 @@
         public decimal ValorTotal { get; set; }
         public DateTime Fecha { get; set; }
         public bool Eliminado { get; set; }
+        public List<TbPedidoDetalle> Detalles { get; set; } = new List<TbPedidoDetalle>();
 
     }
 }

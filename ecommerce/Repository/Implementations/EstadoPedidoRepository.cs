@@ -2,6 +2,7 @@
 using ecommerce.Data;
 using ecommerce.Model;
 using ecommerce.Repository.Interfaces;
+using System.Data;
 
 namespace ecommerce.Repository.Implementations
 {
@@ -16,46 +17,28 @@ namespace ecommerce.Repository.Implementations
 
         public async Task<IEnumerable<TbEstadoPedido>> GetAllAsync()
         {
-            var query = "SELECT * FROM TbEstadoPedido";
+            var storedProcedure = "SP_GetAllEstadoPedido";
             using (var connection = _context.CreateConnection())
             {
-                return await connection.QueryAsync<TbEstadoPedido>(query);
+                var parameters = new DynamicParameters();
+
+                return await connection.QueryAsync<TbEstadoPedido>(storedProcedure, commandType: CommandType.StoredProcedure);
             }
         }
 
         public async Task<TbEstadoPedido> GetByIdAsync(int id)
         {
-            var query = "SELECT * FROM TbEstadoPedido WHERE EstadoId = @Id";
+            var storedProcedure = "SP_GetEstadoPedidoById";
             using (var connection = _context.CreateConnection())
             {
-                return await connection.QueryFirstOrDefaultAsync<TbEstadoPedido>(query, new { Id = id });
-            }
-        }
+                // Crear los parámetros para el procedimiento almacenado
+                var parameters = new DynamicParameters();
+                parameters.Add("EstadoId", id);
 
-        public async Task<int> InsertAsync(TbEstadoPedido estadoPedido)
-        {
-            var query = "INSERT INTO TbEstadoPedido (Nombre) VALUES (@Nombre)";
-            using (var connection = _context.CreateConnection())
-            {
-                return await connection.ExecuteAsync(query, estadoPedido);
-            }
-        }
+                // Ejecutar el procedimiento almacenado y mapear el resultado a la clase TbPedido
+                var estado = await connection.QuerySingleOrDefaultAsync<TbEstadoPedido>(storedProcedure, parameters, commandType: CommandType.StoredProcedure);
 
-        public async Task<int> UpdateAsync(TbEstadoPedido estadoPedido)
-        {
-            var query = "UPDATE TbEstadoPedido SET Nombre = @Nombre WHERE EstadoId = @EstadoId";
-            using (var connection = _context.CreateConnection())
-            {
-                return await connection.ExecuteAsync(query, estadoPedido);
-            }
-        }
-
-        public async Task<int> DeleteAsync(int id)
-        {
-            var query = "DELETE FROM TbEstadoPedido WHERE EstadoId = @Id";
-            using (var connection = _context.CreateConnection())
-            {
-                return await connection.ExecuteAsync(query, new { Id = id });
+                return estado;
             }
         }
     }

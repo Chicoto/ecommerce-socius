@@ -4,10 +4,9 @@ namespace ecommerce.Services.Interfaces
 {
     public interface IPedidoService
     {
-        Task<IEnumerable<TbPedido>> GetAllAsync();
-        Task<TbPedido> GetByIdAsync(int id);
-        Task<int> InsertAsync(TbPedido pedido);
-        Task<int> UpdateAsync(TbPedido pedido);
-        Task<int> DeleteAsync(int id);
+        Task<IEnumerable<TbPedido>> GetAllPedidosAsync();
+        Task<IEnumerable<TbPedido>> GetPedidosByUsuarioTokenAsync(Guid token);
+        Task<int> InsertPedidoAsync(TbPedido pedido);
+        Task<TbPedido?> GetByIdAsync(int pedidoId);
     }
 }
